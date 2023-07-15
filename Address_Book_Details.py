@@ -9,6 +9,8 @@ address_book = {}
 
 class addressBookAssignment():   
 
+# Creating address book 
+
     def address_details(self):
         
         
@@ -27,10 +29,10 @@ class addressBookAssignment():
                 #prev_book.append(book_name)
 
                 #first_name = input('Enter first name: ')
-                first_name = self.regex_validation()
+                first_name = self.regex_fname_validation()
                 address_book[book_name]['First Name'] = first_name
                 
-                last_name = input('Enter last name: ')
+                last_name = self.regex_lname_validation()
                 address_book[book_name]['Last Name'] = last_name
                 
                 address = input('Enter address: ')
@@ -42,11 +44,14 @@ class addressBookAssignment():
                 state = input('Enter state name: ')
                 address_book[book_name]['State'] = state
 
-                zip_code = input('Enter zip_code: ')
+                zip_code = self.regex_zipcode_validation()
                 address_book[book_name]['Zip Code'] = zip_code
                 
-                mobile = int(input('Enter mobile number: '))
+                mobile = self.regex_mobile_validation()
                 address_book[book_name]['Mobile'] = mobile
+
+                email = self.regex_email_validation()
+                address_book[book_name]['Email'] = email
 
                 adress_book_count -= 1
 
@@ -71,12 +76,13 @@ class addressBookAssignment():
     #print(details)
 
 
+# Editing address book details
 
     def edit_addressbook(self):
         # (options for editing) - based on adress book name edit the person details
         # all details -
 
-        print('Edit details\n1:first name\n2:second name\n3:Address\n4:All details ')
+        print('Edit details\n1:Mobile No\n2:Email Address\n3:Address\n4:All details ')
         choice = int(input())
             
 
@@ -90,12 +96,12 @@ class addressBookAssignment():
                 else:
                     
                     if int(choice) == 1:
-                        first_name = input('Enter first name you want to edit: ')
-                        address_book[book_name]['First Name']  = first_name
+                        mobile = self.regex_mobile_validation()
+                        address_book[book_name]['Mobile'] = mobile
 
                     elif int(choice) == 2:
-                        last_name = input('Enter last name you want to edit: ')
-                        address_book[book_name]['Last Name']  = last_name
+                        email = self.regex_email_validation()
+                        address_book[book_name]['Email'] = email
 
                     elif int(choice) == 3:
                         address = input('Enter address you want to edit: ')
@@ -104,10 +110,10 @@ class addressBookAssignment():
                     elif int(choice) == 4:
                         all_edit = input("You want to edit all details [Y/N] : ")
                         if all_edit.upper() == 'Y':
-                            first_name = input('Enter first name: ')
+                            first_name = self.regex_fname_validation
                             address_book[book_name]['First Name'] = first_name
                             
-                            last_name = input('Enter last name: ')
+                            last_name = self.regex_lname_validation
                             address_book[book_name]['Last Name'] = last_name
                             
                             address = input('Enter address: ')
@@ -119,11 +125,14 @@ class addressBookAssignment():
                             state = input('Enter state name: ')
                             address_book[book_name]['State'] = state
 
-                            zip_code = input('Enter zip_code: ')
+                            zip_code = self.regex_zipcode_validation
                             address_book[book_name]['Zip Code'] = zip_code
                             
-                            mobile = int(input('Enter mobile number: '))
-                            address_book[book_name]['Mobile'] = mobile    
+                            mobile = self.regex_mobile_validation
+                            address_book[book_name]['Mobile'] = mobile  
+
+                            email = self.regex_email_validation()
+                            address_book[book_name]['Email'] = email  
 
                         else:
                             print('No update needed')  
@@ -137,7 +146,8 @@ class addressBookAssignment():
     #print(edit_details)
 
 
-    # address book delete
+# address book delete
+
     def delete_addressbook(self):
         Book = address_book.keys()
         print(f'The existing address books are : {Book}')
@@ -149,7 +159,7 @@ class addressBookAssignment():
 
     #delete_addressbook()
 
-    # write adressbook in json
+# write adressbook in json
     def write_json(self):
         json_obj = json.dumps(address_book, indent=4)
         with open("D:\\FirstTest\\PythonSelenium\\address_book.json", "w") as output:
@@ -159,7 +169,7 @@ class addressBookAssignment():
     #write_json()    
 
 
-    #read from json
+#read from json
     def read_json(self):
         with open("D:\\FirstTest\\PythonSelenium\\address_book.json", "r", encoding ='utf-8') as output:
             jsonobj = json.load(output)
@@ -169,24 +179,68 @@ class addressBookAssignment():
 
 
 
-    # display 
+# display address book
     def display_addressbook(self):
         print(address_book)
 
         display_df = pd.DataFrame(address_book)
         print(display_df)
 
-    def regex_validation(self):
+# Regex validation
+
+    def regex_fname_validation(self):
         
         while True:
             first_name = input('Enter first name: ')
-            if re.match("^[A-Z]{1}[A-Z-a-z]{2, }$", first_name):
-                print("valid name")
+            if re.match("^[A-Z]{1}[A-Z-a-z]*$", first_name):
+                break
                 
             else:
-                print("Enter valid name")
+                print("Oopss..!! Enter valid first name")
                 continue
 
+    def regex_lname_validation(self):
+        
+        while True:
+            last_name = input('Enter last name: ')
+            if re.match("^[A-Z]{1}[A-Z-a-z]*$", last_name):
+                break
+                
+            else:
+                print("Oops..!! Enter valid last name")
+                continue
+
+    def regex_mobile_validation(self):
+        
+        while True:
+            mobile = input('Enter mobile number: ')
+            if re.match("^(91){1}[0-9]{10}", mobile):
+                break
+                
+            else:
+                print("Ooopss..!! Enter valid mobile number")
+                continue   
+        return mobile     
+
+    def regex_email_validation(self):
+        while True:
+            email = input('Enter email address: ') 
+            if re.match("^[A-Za-z0-9]*(@gmail.com)$", email) or re.match("^[A-Za-z0-9]*(@yahoo.com)$", email) :
+                break
+            else:
+                print("Ooops..!! Enter valid email address")
+                continue
+        return email
+    
+    def regex_zipcode_validation(self):
+        while True:
+            zip_code = input('Enter zip_code: ')
+            if re.match("^[0-9]{6}$", zip_code):
+                break
+            else:
+                print("Oopss..!! Enter valid Zipcode : ")
+
+        return zip_code
 
 
 
